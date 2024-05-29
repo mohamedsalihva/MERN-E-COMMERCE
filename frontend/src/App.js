@@ -1,4 +1,4 @@
-
+import './App.css';
 import Header from './component/header/Header';
 import Footer from './component/footer/Footer';
 import { Outlet } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import Context from './context/context';
 import { setUserDetails } from './store/userSlice';
 import { useDispatch } from 'react-redux';
+
 
 function App() {
   const dispatch = useDispatch()

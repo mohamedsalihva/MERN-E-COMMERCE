@@ -1,5 +1,6 @@
 
 
+
 const backendDomain = "http://localhost:8080";
 
 const SummaryApi = {
@@ -22,6 +23,10 @@ const SummaryApi = {
     allUsers: {
         url: `${backendDomain}/api/all-user`,
         method: "get"
+    },
+    updateUser:{
+         url:`${backendDomain}/api/update-user`,
+         method: "put"
     }
 
 };

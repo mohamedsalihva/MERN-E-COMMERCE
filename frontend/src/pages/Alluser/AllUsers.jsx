@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react'
 import SummaryApi from '../../common/index'
 import { toast } from 'react-toastify'
 import { MdModeEdit } from "react-icons/md";
-//  import ChangeUserRole from '../components/ChangeUserRole';
+import ChangeUserRole from '../../component/changeuserRole/ChangeUserRole';
+ 
 
 const AllUsers = () => {
     const [allUser,setAllUsers] = useState([])
-    // const [openUpdateRole,setOpenUpdateRole] = useState(false)
-    // const [updateUserDetails,setUpdateUserDetails] = useState({
-    //     email : "",
-    //     name : "",
-    //     role : "",
-    //     _id  : ""
-    // })
+    const [openUpdateRole,setOpenUpdateRole] = useState(false)
+    const [updateUserDetails,setUpdateUserDetails] = useState({
+        email : "",
+        name : "",
+        role : "",
+        _id  : ""
+    })
 
     const fetchAllUsers = async() =>{
         const fetchData = await fetch(SummaryApi.allUsers.url,{
@@ -60,8 +61,8 @@ const AllUsers = () => {
                     <button
                       className='bg-green-500 text-white p-2 rounded-full cursor-pointer hover:bg-green-700'
                       onClick={() => {
-                        // setUpdateUserDetails(el);
-                        // setOpenUpdateRole(true);
+                        setUpdateUserDetails(el);
+                        setOpenUpdateRole(true);
                       }}
                     >
                       <MdModeEdit />
@@ -72,7 +73,7 @@ const AllUsers = () => {
             </tbody>
           </table>
     
-          {/* {openUpdateRole && (
+          {openUpdateRole && (
             <ChangeUserRole
               onClose={() => setOpenUpdateRole(false)}
               name={updateUserDetails.name}
@@ -81,7 +82,17 @@ const AllUsers = () => {
               userId={updateUserDetails._id}
               callFunc={fetchAllUsers}
             />
-          )} */}
+          )}
+          {
+            openUpdateRole &&(
+
+              <ChangeUserRole onClose={()=>setOpenUpdateRole(false)} name={updateUserDetails.name}
+              email={updateUserDetails.email}
+              role={updateUserDetails.role}
+              userId={updateUserDetails._id}
+              callFunc={fetchAllUsers}/>
+            )
+          }
         </div>
       );
     }
