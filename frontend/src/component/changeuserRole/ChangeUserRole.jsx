@@ -5,77 +5,118 @@ import SummaryApi from '../../common/index';
 import { toast } from 'react-toastify';
 
 const ChangeUserRole = ({
-    name,
-    email,
-    role,
+    name: initialName,
+    email: initialEmail,
+    role: initialRole,
     userId,
     onClose,
-     callFunc,
+    callFunc,
 }) => {
-    const [userRole,setUserRole] = useState(role)
+    const [formData, setFormData] = useState({
+        name: initialName,
+        email: initialEmail,
+        role: initialRole
+    });
 
-    const handleOnChangeSelect = (e) => {
-        setUserRole(e.target.value)
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
-        console.log(e.target.value)
-    }
+    const updateUser = async () => {
+        try {
+            const fetchResponse = await fetch(SummaryApi.updateUser.url, {
+                method: SummaryApi.updateUser.method,
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    ...formData
+                })
+            });
 
-    const updateUserRole = async() =>{
-        const fetchResponse = await fetch(SummaryApi.updateUser.url,{
-            method : SummaryApi.updateUser.method,
-            credentials : 'include',
-            headers : {
-                "content-type" : "application/json"
-            },
-            body : JSON.stringify({
-                userId : userId,
-                role : userRole
-            })
-        })
+            const responseData = await fetchResponse.json();
 
-        const responseData = await fetchResponse.json()
-
-        if(responseData.success){
-            toast.success(responseData.message)
-            onClose()
-             callFunc()
+            if (responseData.success) {
+                toast.success(responseData.message);
+                onClose();
+                callFunc();
+            } else {
+                toast.error(responseData.message);
+            }
+        } catch (error) {
+            toast.error("An error occurred");
         }
+    };
 
-        console.log("role updated",responseData)
+    return (
+        <div className='fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-center items-center bg-slate-200 bg-opacity-50'>
+            <div className='mx-auto bg-white shadow-md p-4 w-full max-w-sm'>
 
-    }
+                <button className='block ml-auto' onClick={onClose}>
+                    <IoMdClose />
+                </button>
 
-  return (
-    <div className='fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-between items-center bg-slate-200 bg-opacity-50'>
-       <div className='mx-auto bg-white shadow-md p-4 w-full max-w-sm'>
+                <h1 className='pb-4 text-lg font-medium'>Change User Details</h1>
 
-            <button className='block ml-auto' onClick={onClose}>
-                <IoMdClose/>
-            </button>
+                <div className='mb-4'>
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='name'>
+                        Name
+                    </label>
+                    <input
+                        type='text'
+                        name='name'
+                        value={formData.name}
+                        onChange={handleChange}
+                        className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                    />
+                </div>
 
-            <h1 className='pb-4 text-lg font-medium'>Change User Role</h1>
+                <div className='mb-4'>
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='email'>
+                        Email
+                    </label>
+                    <input
+                        type='email'
+                        name='email'
+                        value={formData.email}
+                        onChange={handleChange}
+                        className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                    />
+                </div>
 
-             <p>Name : {name}</p>   
-             <p>Email : {email}</p> 
+                <div className='mb-4'>
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='role'>
+                        Role
+                    </label>
+                    <select
+                        name='role'
+                        value={formData.role}
+                        onChange={handleChange}
+                        className='border px-4 py-2 rounded w-full'
+                    >
+                        {Object.values(ROLE).map((el) => (
+                            <option value={el} key={el}>
+                                {el}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className='flex items-center justify-between my-4'>
-                <p>Role :</p>  
-                <select className='border px-4 py-1' value={userRole} onChange={handleOnChangeSelect}>
-                    {
-                        Object.values(ROLE).map(el => {
-                            return(
-                                <option value={el} key={el}>{el}</option>
-                            )
-                        })
-                    }
-                </select>
+                <button
+                    className='w-full py-2 px-4 rounded bg-red-600 text-white hover:bg-red-700'
+                    onClick={updateUser}
+                >
+                    Update User
+                </button>
             </div>
+        </div>
+    );
+};
 
-
-            <button className='w-fit mx-auto block  py-1 px-3 rounded-full bg-red-600 text-white hover:bg-red-700' onClick={updateUserRole}>Change Role</button>
-       </div>
-    </div>
-  )
-}
-
-export default ChangeUserRole
+export default ChangeUserRole;
