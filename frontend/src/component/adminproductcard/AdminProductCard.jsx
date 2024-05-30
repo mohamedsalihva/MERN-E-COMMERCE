@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { MdModeEditOutline } from "react-icons/md";
-// import AdminEditProduct from './AdminEditProduct';
+import AdminEditProduct from '../admineditproduct/AdminEditProduct';
 // import displayINRCurrency from '../helpers/displayCurrency';
 
 const AdminProductCard = ({
   data,
-  // fetchdata
+   fetchdata
 }) => {
-  // const [editProduct, setEditProduct] = useState(false);
+   const [editProduct, setEditProduct] = useState(false);
 
   return (
     <div className="bg-white p-4 rounded shadow-md flex flex-col items-center">
@@ -26,14 +26,14 @@ const AdminProductCard = ({
           {/* {displayINRCurrency(data.sellingPrice)} */}
           ₹{data.sellingPrice}
         </p>
-        <div className="w-fit ml-auto p-2 bg-green-100 hover:bg-green-600 rounded-full hover:text-white cursor-pointer flex items-center justify-center">
+        <div className="w-fit ml-auto p-2 bg-green-100 hover:bg-green-600 rounded-full hover:text-white cursor-pointer flex items-center justify-center" onClick={()=>setEditProduct(true)}>
           <MdModeEditOutline size={24} />
         </div>
       </div>
 
-      {/* {editProduct && (
+      {editProduct && (
         <AdminEditProduct productData={data} onClose={() => setEditProduct(false)} fetchdata={fetchdata} />
-      )} */}
+      )}
     </div>
   );
 };

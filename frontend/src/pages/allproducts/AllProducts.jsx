@@ -47,15 +47,16 @@ function AllProducts() {
         </div>
       )}
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {allProduct.map((product, index) => (
-          <AdminProductCard
-            data={product}
-            key={index + "allProduct"}
-            fetchdata={fetchAllProduct}
-          />
-        ))}
-      </div>
+<div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  {allProduct.map((product, index) => (
+    <AdminProductCard
+      data={product}
+      key={index + "allProduct"}
+      fetchdata={fetchAllProduct}
+    />
+  ))}
+</div>
+
     </div>
   );
 }

@@ -6,10 +6,9 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import uploadImage from '../../helpers/Uploadimage';
 import SummaryApi from '../../common';
 import { toast } from 'react-toastify';
-
-const UploadProducts = ({ 
-    //onClose
- }) => {
+import { useNavigate } from 'react-router-dom';
+const UploadProducts = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState({
         productName: "",
         brandName: "",
@@ -20,7 +19,6 @@ const UploadProducts = ({
         sellingPrice: ""
     });
 
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prev) => ({
@@ -28,7 +26,6 @@ const UploadProducts = ({
             [name]: value
         }));
     };
-  
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,14 +43,13 @@ const UploadProducts = ({
 
         if (responseData.success) {
             toast.success(responseData.message);
-            console.log(responseData.message)
-            // onClose();
+            console.log(responseData.message);
+            navigate('/admin-panel');
         } 
         if (responseData.error) {
             toast.error(responseData.message);
-            console.log(responseData.message)
-           
-        } 
+            console.log(responseData.message);
+        }
     };
 
     const handleUploadProduct = async (e) => {
@@ -73,12 +69,16 @@ const UploadProducts = ({
         }));
     };
 
+    const handleCancel = () => {
+        navigate('/admin-panel');
+    };
+
     return (
         <div className="fixed w-full h-full top-0 left-0 flex justify-center items-center bg-black bg-opacity-50">
             <div className="bg-white p-8 rounded-lg w-full max-w-2xl h-full max-h-screen overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="font-bold text-xl">Upload Product</h2>
-                    <button className="text-2xl font-bold cursor-pointer" ><CgClose /></button>
+                    <button className="text-2xl font-bold cursor-pointer" onClick={handleCancel}><CgClose /></button>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -193,7 +193,7 @@ const UploadProducts = ({
                         <button
                             type="button"
                             className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-                            // onClick={onClose}
+                            onClick={handleCancel}
                         >
                             Cancel
                         </button>
