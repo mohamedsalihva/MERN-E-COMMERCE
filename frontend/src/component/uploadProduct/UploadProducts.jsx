@@ -7,6 +7,7 @@ import uploadImage from '../../helpers/Uploadimage';
 import SummaryApi from '../../common';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+
 const UploadProducts = () => {
     const navigate = useNavigate();
     const [data, setData] = useState({
@@ -74,42 +75,44 @@ const UploadProducts = () => {
     };
 
     return (
-        <div className="fixed w-full h-full top-0 left-0 flex justify-center items-center bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded-lg w-full max-w-2xl h-full max-h-screen overflow-y-auto">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded-lg w-full max-w-2xl h-full max-h-screen overflow-y-auto shadow-xl">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="font-bold text-xl">Upload Product</h2>
-                    <button className="text-2xl font-bold cursor-pointer" onClick={handleCancel}><CgClose /></button>
+                    <h2 className="font-bold text-2xl text-gray-800">Upload Product</h2>
+                    <button className="text-2xl text-gray-600 hover:text-gray-900 transition" onClick={handleCancel}>
+                        <CgClose />
+                    </button>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">Product Name</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
                         <input
                             type="text"
                             name="productName"
                             value={data.productName}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">Brand Name</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Brand Name</label>
                         <input
                             type="text"
                             name="brandName"
                             value={data.brandName}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">Category</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
                         <select
                             name="category"
                             value={data.category}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                             required
                         >
                             <option value="" disabled>Select Category</option>
@@ -118,28 +121,27 @@ const UploadProducts = () => {
                             ))}
                         </select>
                     </div>
-
-                    <label htmlFor='productImage' className='block text-sm font-semibold mb-2'>Product Image :</label>
-                    <label htmlFor='uploadImageInput'>
-                        <div className='p-2 bg-slate-100 border rounded h-32 w-full flex justify-center items-center cursor-pointer'>
-                            <div className='text-slate-500 flex justify-center items-center flex-col gap-2'>
-                                <span className='text-4xl'><FaCloudUploadAlt /></span>
-                                <p className='text-sm'>Upload Product Image</p>
+                    <div className="mb-4">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Product Image</label>
+                        <label htmlFor="uploadImageInput" className="block">
+                            <div className="p-4 bg-gray-100 border border-dashed border-gray-300 rounded h-32 w-full flex justify-center items-center cursor-pointer hover:bg-gray-200 transition">
+                                <div className="text-gray-500 flex flex-col justify-center items-center gap-2">
+                                    <FaCloudUploadAlt className="text-4xl" />
+                                    <p className="text-sm">Upload Product Image</p>
+                                </div>
                                 <input
-                                    type='file'
-                                    id='uploadImageInput'
-                                    className='hidden'
-                                    multiple
+                                    type="file"
+                                    id="uploadImageInput"
+                                    className="hidden"
                                     onChange={handleUploadProduct}
                                 />
                             </div>
-                        </div>
-                    </label>
-
+                        </label>
+                    </div>
                     {data.productImage.length > 0 && (
                         <div className="mt-4 flex flex-wrap gap-4">
                             {data.productImage.map((el, index) => (
-                                <div key={index} className="relative w-32 h-32 border rounded overflow-hidden">
+                                <div key={index} className="relative w-32 h-32 border border-gray-300 rounded overflow-hidden shadow-sm">
                                     <img
                                         src={el}
                                         alt={`Uploaded product ${index}`}
@@ -147,7 +149,7 @@ const UploadProducts = () => {
                                     />
                                     <button
                                         type="button"
-                                        className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-1"
+                                        className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-1 hover:bg-red-600 transition"
                                         onClick={() => handleDeleteImage(el)}
                                     >
                                         <RiDeleteBin6Line />
@@ -156,50 +158,49 @@ const UploadProducts = () => {
                             ))}
                         </div>
                     )}
-
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">Description</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
                         <textarea
                             name="description"
                             value={data.description}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">Price</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Price</label>
                         <input
                             type="number"
                             name="price"
                             value={data.price}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2">Selling Price</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Selling Price</label>
                         <input
                             type="number"
                             name="sellingPrice"
                             value={data.sellingPrice}
                             onChange={handleChange}
-                            className="w-full border border-gray-300 rounded px-3 py-2"
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                             required
                         />
                     </div>
                     <div className="flex justify-end mt-6">
                         <button
                             type="button"
-                            className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
                             onClick={handleCancel}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white px-4 py-2 rounded"
+                            className="bg-blue-600 text-white px-4 py-2 rounded ml-2 hover:bg-blue-700 transition"
                         >
                             Submit
                         </button>

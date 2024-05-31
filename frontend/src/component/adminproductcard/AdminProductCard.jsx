@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdModeEditOutline } from "react-icons/md";
 import AdminEditProduct from '../admineditproduct/AdminEditProduct';
-// import displayINRCurrency from '../helpers/displayCurrency';
+
 
 const AdminProductCard = ({
   data,
@@ -23,7 +23,6 @@ const AdminProductCard = ({
           {data.productName}
         </h1>
         <p className="text-center font-semibold text-gray-800 mb-4">
-          {/* {displayINRCurrency(data.sellingPrice)} */}
           ₹{data.sellingPrice}
         </p>
         <div className="w-fit ml-auto p-2 bg-green-100 hover:bg-green-600 rounded-full hover:text-white cursor-pointer flex items-center justify-center" onClick={()=>setEditProduct(true)}>
