@@ -1,37 +1,37 @@
 const productModel = require("../../models/ProductModels");
 
 const getProductCategory = async (req, res) => {
-    try {
-        // Step 1: Get all distinct categories
-        const categories = await productModel.distinct("category");
-        console.log("categories:", categories);
+    try{
+        const productCategory = await productModel.distinct("category")
 
-        // Step 2: Initialize an empty array to hold products by category
-        const productsByCategory = [];
+        console.log("category",productCategory)
 
-        // Step 3: Loop through each category and get products for each
-        for (const category of categories) {
-            const products = await productModel.find({ category: category });
-            productsByCategory.push({
-                category: category,
-                products: products
-            });
+        //array to store one product from each category
+        const productByCategory = []
+
+        for(const category of productCategory){
+            const product = await productModel.findOne({category })
+
+            if(product){
+                productByCategory.push(product)
+            }
         }
 
-        // Step 4: Send the response with products grouped by category
-        res.status(200).json({
-            data: productsByCategory,
-            error: false,
-            success: true
-        });
-    } catch (error) {
-        // Step 5: Handle any errors
-        res.status(400).json({
-            message: error.message || "An error occurred",
-            error: true,
-            success: false
-        });
-    }
-};
 
+        res.json({
+            message : "category product",
+            data : productByCategory,
+            success : true,
+            error : false
+        })
+
+
+    }catch(err){
+        res.status(400).json({
+            message : err.message || err,
+            error : true,
+            success : false
+        })
+    }
+}
 module.exports = getProductCategory;
