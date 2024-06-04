@@ -7,14 +7,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import SummaryApi from '../../common';
 import { toast } from 'react-toastify';
 import { setUserDetails } from '../../store/userSlice';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ROLE from '../../common/role/role';
+import Context from '../../context/context';
 
 function Header() {
   const user = useSelector(state => state?.user?.user)
   const dispatch = useDispatch()
   const [menuDisplay, setMenuDisplay] = useState(false)
   const navigate = useNavigate()
+  const context = useContext(Context)
   console.log("user header:", user)
 
   const handleLogout = async () => {
@@ -36,7 +38,7 @@ function Header() {
     }
 
   }
-
+console.log("cart:",context)
   return (
     <header className='fixed top-0 left-0 right-0 z-50 h-16 shadow-md bg-white'>
       <div className='container mx-auto flex items-center px-4 justify-between h-full'>
@@ -87,12 +89,17 @@ function Header() {
             }
           </div>
 
+            {
+              user?._id &&(
+                
           <div className='text-2xl relative'>
             <span><FaShoppingCart /></span>
             <div className='bg-red-600 text-white h-5 w-5 p-1 flex items-center justify-center absolute -top-2 -right-3 rounded-full'>
-              <p className='text-sm'>0</p>
+              <p className='text-sm'>{context?.cardcount}</p>
             </div>
           </div>
+              )
+            }
 
           <div>
             {

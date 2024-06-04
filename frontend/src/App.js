@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SummaryApi from './common';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Context from './context/context';
 import { setUserDetails } from './store/userSlice';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 
 function App() {
   const dispatch = useDispatch()
+  const [cardcount,setCardcount] = useState(0)
 
   
   const fetchUserDetails = async()=>{
@@ -29,19 +30,28 @@ function App() {
       console.log("userdetails:", dataResponse)
     }
 
-
+const fetchUserAddToCart =async()=>{
+  const dataResponse = await fetch(SummaryApi.countcart.url,{
+    method : SummaryApi.countcart.method,
+    credentials : 'include'
+  })
+  const dataApi = await dataResponse.json()
+  console.log("dataApi:",dataApi)
+  setCardcount(dataApi.data?.count)
+}
 
 useEffect(()=>{
  
   fetchUserDetails()
-
+  fetchUserAddToCart()
 
 },[])
   return (
     <>
     <Context.Provider value={{
         fetchUserDetails,
-     
+        cardcount,
+        fetchUserAddToCart
     }}>
       <ToastContainer 
         position='top-center'
