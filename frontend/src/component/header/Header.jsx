@@ -92,12 +92,12 @@ console.log("cart:",context)
             {
               user?._id &&(
                 
-          <div className='text-2xl relative'>
+          <Link to={"/cart"} className='text-2xl relative'>
             <span><FaShoppingCart /></span>
             <div className='bg-red-600 text-white h-5 w-5 p-1 flex items-center justify-center absolute -top-2 -right-3 rounded-full'>
               <p className='text-sm'>{context?.cardcount}</p>
             </div>
-          </div>
+          </Link>
               )
             }
 

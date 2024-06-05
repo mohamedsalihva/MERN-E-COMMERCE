@@ -57,9 +57,13 @@ const SummaryApi = {
         method :"post"
     },
     countcart:{
-      url:`${backendDomain}/api/countAddToCart`
-    }
-
+      url:`${backendDomain}/api/countAddToCart`,
+      method:"get"
+    },
+      addToCartVeiw:{
+        url:`${backendDomain}/api/view-cart-product`,
+        method:"get"
+      }
 
 };
 
