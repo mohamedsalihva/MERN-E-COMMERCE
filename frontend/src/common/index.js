@@ -63,6 +63,14 @@ const SummaryApi = {
       addToCartVeiw:{
         url:`${backendDomain}/api/view-cart-product`,
         method:"get"
+      },
+      updateCartProduct:{
+        url:`${backendDomain}/api/update-cartProduct`,
+        method:"put"
+      },
+      deleteCartProduct:{
+        url:`${backendDomain}/api/delete-cart`,
+        method:"delete"
       }
 
 };

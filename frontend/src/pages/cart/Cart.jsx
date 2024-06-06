@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SummaryApi from '../../common';
+import { FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
     const [data, setData] = useState([]);
@@ -32,73 +34,139 @@ const Cart = () => {
         fetchData();
     }, []);
 
-    console.log("cartdata:", data);
+    const updateCart = async (id, newQty) => {
+        const response = await fetch(SummaryApi.updateCartProduct.url, {
+            method: SummaryApi.updateCartProduct.method,
+            credentials: 'include',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                _id: id,
+                quantity: newQty
+            })
+        });
+        const responseData = await response.json();
+
+        if (responseData.success) {
+            fetchData();
+        }
+    };
+
+    const deleteCartItem = async (id) => {
+        try {
+            const response = await fetch(SummaryApi.deleteCartProduct.url, {
+                method: SummaryApi.deleteCartProduct.method,
+                credentials: 'include',
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    _id: id,
+                })
+            });
+    
+            const responseData = await response.json();
+    
+            if (responseData.success) {
+                fetchData(); 
+                toast.success(responseData.message)
+                
+            } else {
+                toast.error("Error deleting item:", responseData.message || "Unknown error");
+            }
+        } catch (error) {
+            console.error("Error deleting item:", error);
+        }
+    };
+
+    const increaseCart = (id, qty) => {
+        updateCart(id, qty + 1);
+    };
+
+    const decreaseCart = (id, qty) => {
+        if (qty > 1) {
+            updateCart(id, qty - 1);
+        }
+
+    };
 
     return (
-        <div className='container mx-auto mt-20'>
+        <div className='container mx-auto mt-10'>
             <div className='text-center text-lg my-3'>
-                {
-                    data.length === 0 && !loading && (
-                        <p className='bg-white py-5'>No Data</p>
-                    )
-                }
+                {data.length === 0 && !loading && (
+                    <p className='bg-white py-5 rounded-md shadow-sm'>No Data</p>
+                )}
             </div>
 
-            <div className='flex flex-col lg:flex-row gap-10 lg:justify-between p-4'>
+            <div className='flex flex-col lg:flex-row gap-8 lg:justify-between p-4'>
                 <div className='w-full max-w-3xl'>
-                    {
-                        loading ? (
-                            loadingCart.map((el, index) => (
-                                <div key={el + "Add To Cart Loading" + index} className='w-full bg-slate-200 h-32 my-2 border border-slate-300 animate-pulse rounded'>
+                    {loading ? (
+                        loadingCart.map((_, index) => (
+                            <div key={index} className='w-full bg-gray-200 h-32 my-2 border border-gray-300 animate-pulse rounded-md'>
+                            </div>
+                        ))
+                    ) : (
+                        data.map((product) => (
+                            <div key={product?._id} className='w-full bg-white h-32 my-2 border border-gray-300 rounded-md flex shadow-sm'>
+                                <div className='w-32 h-32 bg-gray-200 rounded-l-md'>
+                                    {product?.productId?.productImage && product.productId.productImage.length > 0 && (
+                                        <img src={product.productId.productImage[0]} className='w-full h-full object-cover rounded-l-md' alt={product?.productId?.productName} />
+                                    )}
                                 </div>
-                            ))
-                        ) : (
-                            data.map((product, index) => (
-                                <div key={product?._id + "Add To Cart Loading"} className='w-full bg-white h-32 my-2 border border-slate-300 rounded grid grid-cols-[128px,1fr]'>
-                                    <div className='w-32 h-32 bg-slate-200'>
-                                        {product?.productId?.productImage && product.productId.productImage.length > 0 && (
-                                            <img src={product.productId.productImage[0]} className='w-full h-full object-scale-down mix-blend-multiply' alt={product?.productId?.productName} />
-                                        )}
+                                <div className='px-4 py-2 flex-grow flex flex-col justify-between'>
+                                    <div>
+                                        <h2 className='text-lg font-semibold text-gray-800 truncate'>{product?.productId?.productName}</h2>
+                                        <p className='text-sm text-gray-500 capitalize'>{product?.productId.category}</p>
                                     </div>
-                                    <div className='px-4 py-2 relative'>
-                                        <h2 className='text-lg lg:text-xl text-ellipsis line-clamp-1'>{product?.productId?.productName}</h2>
-                                        <p className='capitalize text-slate-500'>{product?.productId.category}</p>
-                                        <div className='flex items-center justify-between'>
-                                            <p className='text-red-600 font-medium text-lg'>{product?.productId?.sellingPrice}</p>
-                                            <p className='text-slate-600 font-semibold text-lg'>{product?.productId?.sellingPrice * product?.quantity}</p>
-                                        </div>
-                                        <div className='flex items-center gap-3 mt-1'>
-                                            <button className='border border-red-600 text-red-600 hover:bg-red-600 hover:text-white w-6 h-6 flex justify-center items-center rounded'>-</button>
-                                            <span>{product?.quantity}</span>
-                                            <button className='border border-red-600 text-red-600 hover:bg-red-600 hover:text-white w-6 h-6 flex justify-center items-center rounded'>+</button>
-                                        </div>
+                                    <div className='flex items-center justify-between'>
+                                        <p className='text-red-600 font-medium text-lg'>₹{product?.productId?.sellingPrice}</p>
+                                        <p className='text-gray-600 font-semibold text-lg'>₹{(product?.productId?.sellingPrice * product?.quantity).toFixed(2)}</p>
+                                    </div>
+                                    <div className='flex items-center gap-2 mt-1'>
+                                        <button
+                                            className='border border-red-600 text-red-600 hover:bg-red-600 hover:text-white w-8 h-8 flex justify-center items-center rounded-md'
+                                            onClick={() => decreaseCart(product._id, product.quantity)}
+                                        >
+                                            -
+                                        </button>
+                                        <span className='w-8 text-center'>{product?.quantity}</span>
+                                        <button
+                                            className='border border-red-600 text-red-600 hover:bg-red-600 hover:text-white w-8 h-8 flex justify-center items-center rounded-md'
+                                            onClick={() => increaseCart(product._id, product.quantity)}
+                                        >
+                                            +
+                                        </button>
+                                        <button
+                                            className='border border-gray-400 text-gray-400 hover:bg-gray-400 hover:text-white w-8 h-8 flex justify-center items-center rounded-md'
+                                            onClick={() => deleteCartItem(product._id)}
+                                        >
+                                            <FaTrash />
+                                        </button>
                                     </div>
                                 </div>
-                            ))
-                        )
-                    }
+                            </div>
+                        ))
+                    )}
                 </div>
 
                 <div className='mt-5 lg:mt-0 w-full max-w-sm'>
-                    {
-                        loading ? (
-                            <div className='h-36 bg-slate-200 border border-slate-300 animate-pulse'>
+                    {loading ? (
+                        <div className='h-36 bg-gray-200 border border-gray-300 animate-pulse rounded-md'></div>
+                    ) : (
+                        <div className='bg-white rounded-md shadow-sm p-4'>
+                            <h2 className='text-xl font-semibold text-gray-800 mb-4'>Summary</h2>
+                            <div className='flex items-center justify-between text-lg text-gray-600 mb-2'>
+                                <p>Quantity</p>
+                                <p>{data.reduce((total, item) => total + item.quantity, 0)}</p>
                             </div>
-                        ) : (
-                            <div className='h-36 bg-white'>
-                                <h2 className='text-white bg-red-600 px-4 py-1'>Summary</h2>
-                                <div className='flex items-center justify-between px-4 gap-2 font-medium text-lg text-slate-600'>
-                                    <p>Quantity</p>
-                                    <p>{/* Quantity placeholder */}</p>
-                                </div>
-                                <div className='flex items-center justify-between px-4 gap-2 font-medium text-lg text-slate-600'>
-                                    <p>Total Price</p>
-                                    <p>{/* Total Price placeholder */}</p>
-                                </div>
-                                <button className='bg-blue-600 p-2 text-white w-full mt-2'>Payment</button>
+                            <div className='flex items-center justify-between text-lg text-gray-600 mb-4'>
+                                <p>Total Price</p>
+                                <p>₹{data.reduce((total, item) => total + (item.productId.sellingPrice * item.quantity), 0).toFixed(2)}</p>
                             </div>
-                        )
-                    }
+                            <button className='bg-blue-600 text-white py-2 rounded-md w-full'>Proceed to Payment</button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

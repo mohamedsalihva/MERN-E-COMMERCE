@@ -95,7 +95,7 @@ console.log("cart:",context)
           <Link to={"/cart"} className='text-2xl relative'>
             <span><FaShoppingCart /></span>
             <div className='bg-red-600 text-white h-5 w-5 p-1 flex items-center justify-center absolute -top-2 -right-3 rounded-full'>
-              <p className='text-sm'>{context?.cardcount}</p>
+              <p className='text-sm'>{context?.cartcount}</p>
             </div>
           </Link>
               )
@@ -107,7 +107,7 @@ console.log("cart:",context)
                 <button onClick={handleLogout} className='px-3 py-1 rounded-full text-white bg-cyan-500 hover:bg-red-700'>Logout</button>
               )
                 : (
-                  <Link to={"/login"} className='px-3 py-1 rounded-full text-white bg-cyan-500 hover:bg-cyan-200'>Login</Link>
+                  <Link to={"/login"} className='px-6 py-2 rounded-full text-white bg-cyan-500 hover:bg-cyan-200'>Login</Link>
                 )
             }
           </div>
