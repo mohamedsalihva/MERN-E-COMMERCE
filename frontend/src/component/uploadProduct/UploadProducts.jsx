@@ -75,7 +75,7 @@ const UploadProducts = () => {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 mt-20">
             <div className="bg-white p-8 rounded-lg w-full max-w-2xl h-full max-h-screen overflow-y-auto shadow-xl">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="font-bold text-2xl text-gray-800">Upload Product</h2>
