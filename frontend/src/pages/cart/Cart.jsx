@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import SummaryApi from '../../common';
 import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import Context from '../../context/context';
 
 const Cart = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const context =useContext(Context)
     const loadingCart = new Array(4).fill(null);
 
     const fetchData = async () => {
@@ -70,6 +72,7 @@ const Cart = () => {
     
             if (responseData.success) {
                 fetchData(); 
+                context.fetchUserAddToCart()
                 toast.success(responseData.message)
                 
             } else {
@@ -92,7 +95,7 @@ const Cart = () => {
     };
 
     return (
-        <div className='container mx-auto mt-10'>
+        <div className='container mx-auto mt-20 ml-10  '>
           <div className='text-center text-lg my-3'>
             {data.length === 0 && !loading && (
               <p className='bg-white py-5 rounded-md shadow-sm'>No Data</p>
@@ -153,7 +156,7 @@ const Cart = () => {
               )}
             </div>
     
-            <div className='mt-5 lg:mt-0 w-full max-w-sm'>
+            <div className='mt-5 lg:mt-0 w-full max-w-sm mr-20'>
               {loading ? (
                 <div className='h-36 bg-gray-200 border border-gray-300 animate-pulse rounded-md'></div>
               ) : (

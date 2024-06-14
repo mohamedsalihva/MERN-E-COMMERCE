@@ -39,7 +39,16 @@ function Header() {
     }
 
   }
-console.log("cart:",context)
+  const handlesearch =(e)=>{
+        const {value} = e.target
+
+        if(value){
+         navigate(`/search?q=${value}`)
+        }else{
+          navigate("/search")
+        }
+  }
+
 return (
   <header className='fixed top-0  left-0 right-0 z-50 h-16 shadow-md bg-white '>
     <div className='container mx-auto flex items-center px-4 justify-between h-full '>
@@ -53,7 +62,7 @@ return (
         <input
           type="text"
           placeholder='Search products here ...'
-          className='flex-grow px-4 py-2 rounded-l-md outline-none text-sm'
+          className='flex-grow px-4 py-2 rounded-l-md outline-none text-sm' onChange={handlesearch}
         />
         <div className='bg-cyan-500 text-white p-2 rounded-r-md cursor-pointer'>
           <CiSearch size={20} />
