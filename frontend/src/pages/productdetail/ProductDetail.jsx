@@ -5,7 +5,7 @@ import ProductCard from '../../component/productcard/ProductCard';
 
 const ProductDetail = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const[data,setData]= useState({
+    const [data,setData]= useState({
 
         productName: "",
         brandName: "",

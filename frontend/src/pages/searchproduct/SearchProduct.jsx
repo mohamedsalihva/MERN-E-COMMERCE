@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SummaryApi from '../../common';
+import Context from '../../context/context';
+import addTocart from '../../helpers/addTocart';
 
 const SearchProduct = () => {
   const query = useLocation();
@@ -19,6 +21,14 @@ const SearchProduct = () => {
     }
   };
 
+  
+  const {fetchUserAddToCart} =useContext(Context)
+
+  const handleaddtocart=async (e,id)=>{
+  await  addTocart(e,id)
+  fetchUserAddToCart()
+  }
+
   useEffect(() => {
     fetchProduct();
   }, [query]);
@@ -29,13 +39,13 @@ const SearchProduct = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((product) => (
           <div key={product._id} className="bg-white shadow-md rounded-md overflow-hidden">
-            <img src={product.productImage[0]} alt={product.productName} className="w-full h-48 object-contain" />
+            <img src={product.productImage[0]} alt={product.productName} className="w-full h-40 object-contain" />
             <div className="p-4">
-              <h3 className="text-lg font-semibold mb-2">{product.productName}</h3>
-              <p className="text-gray-600 mb-2">{product.description}</p>
-              <div className="flex justify-between items-center">
-                <p className="text-gray-700 font-semibold">${product.price}</p>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-300">Add to Cart</button>
+              <h3 className="text-md font-semibold mb-1">{product.productName}</h3>
+              <p className="text-gray-600 mb-2 text-sm">{product.description}</p>
+              <div className="flex justify-between items-center mt-4">
+                <p className="text-gray-700 font-semibold text-sm">${product.price}</p>
+                <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition-colors duration-300" onClick={(e)=>handleaddtocart(e,product?._id)}>Add to Cart</button>
               </div>
             </div>
           </div>
@@ -44,5 +54,4 @@ const SearchProduct = () => {
     </div>
   );
 };
-
 export default SearchProduct;

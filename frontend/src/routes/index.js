@@ -6,7 +6,7 @@ import Signup from "../pages/signup/Signup";
 import AdminPanel from "../pages/adminpanel/Adminpanel";
 import AllUsers from "../pages/Alluser/AllUsers";
 import AllProducts from "../pages/allproducts/AllProducts";
-import CategoryProduct from "../pages/CategoryProduct/CategoryProduct";
+// import CategoryProduct from "../pages/CategoryProduct/CategoryProduct";
 import ProductDetail from "../pages/productdetail/ProductDetail";
 import Cart from "../pages/cart/Cart";
 import SearchProduct from "../pages/searchproduct/SearchProduct";
@@ -28,11 +28,11 @@ const router = createBrowserRouter([
                 path:"sign-up",
                 element:<Signup/>
             },
-            {
-               path:"product-category/:categoryname",
-               element:<CategoryProduct/>
+            // {
+            //    path:"product-category/:categoryname",
+            //    element:<CategoryProduct/>
 
-            },
+            // },
             {
                path:"product/:id",
                element:<ProductDetail/>

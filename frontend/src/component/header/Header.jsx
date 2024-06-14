@@ -62,7 +62,7 @@ return (
         <input
           type="text"
           placeholder='Search products here ...'
-          className='flex-grow px-4 py-2 rounded-l-md outline-none text-sm' onChange={handlesearch}
+          className='flex-grow px-4 py-2 rounded-l-md outline-none text-sm ' onChange={handlesearch}
         />
         <div className='bg-cyan-500 text-white p-2 rounded-r-md cursor-pointer'>
           <CiSearch size={20} />
