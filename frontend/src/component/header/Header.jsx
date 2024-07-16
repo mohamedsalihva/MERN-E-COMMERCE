@@ -11,6 +11,7 @@ import { useContext, useState } from 'react';
 import ROLE from '../../common/role/role';
 import Context from '../../context/context';
  import {FaBell } from 'react-icons/fa';
+ import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
 
 function Header() {
   const user = useSelector(state => state?.user?.user)
@@ -49,25 +50,38 @@ function Header() {
         }
   }
 
-return (
-  <header className='fixed top-0  left-0 right-0 z-50 h-16 shadow-md bg-white '>
-    <div className='container mx-auto flex items-center px-4 justify-between h-full '>
-      <div className='ml-4 flex items-center'>
-        <Link to={"/"}>
-          <AiFillAmazonSquare className='text-cyan-500 w-12 h-12' />
-        </Link>
-      </div>
 
-      <div className='hidden lg:flex items-center bg-gray-100 rounded-md'>
-        <input
-          type="text"
-          placeholder='Search products here ...'
-          className='flex-grow px-4 py-2 rounded-l-md outline-none text-sm ' onChange={handlesearch}
-        />
-        <div className='bg-cyan-500 text-white p-2 rounded-r-md cursor-pointer'>
-          <CiSearch size={20} />
+  return (
+    <header className='fixed top-0 left-0 right-0 z-50 h-16 shadow-md bg-white'>
+      <div className='container mx-auto flex items-center justify-between h-full px-4'>
+        <div className='flex items-center'>
+          <Link to={"/"}>
+            <AiFillAmazonSquare className='text-cyan-500 w-12 h-12 mr-5' />
+          </Link>
         </div>
-      </div>
+ 
+        <div className='flex items-center space-x-6 cursor-pointer ml-8'>
+          <ScrollLink to="Home" className='font-bold text-gray-700 '>Home</ScrollLink>
+          <ScrollLink to="footer" smooth={true} duration={500} className='font-bold text-gray-700'>Contact</ScrollLink>
+          <Link to="about" className='font-bold text-gray-700'>About</Link>
+          <ScrollLink to="product" className='font-bold text-gray-700'>Products</ScrollLink>
+          <ScrollLink to="footer" smooth={true} duration={500} className='font-bold text-gray-700'>Privacy Policy</ScrollLink>
+        </div>
+
+        <div className='flex-grow flex items-center justify-center'>
+          <div className='hidden lg:flex items-center bg-gray-100 rounded-md'>
+            <input
+              type="text"
+              placeholder='Search products here ...'
+              className='flex-grow px-4 py-2 rounded-l-md outline-none text-sm'
+              onChange={handlesearch}
+            />
+            <div className='bg-cyan-500 text-white p-2 rounded-r-md cursor-pointer'>
+              <CiSearch size={20} />
+            </div>
+          </div>
+        </div>  
+      
 
       <div className='flex items-center gap-7'>
         <div className='relative flex justify-center'>

@@ -10,6 +10,7 @@ import AllProducts from "../pages/allproducts/AllProducts";
 import ProductDetail from "../pages/productdetail/ProductDetail";
 import Cart from "../pages/cart/Cart";
 import SearchProduct from "../pages/searchproduct/SearchProduct";
+import About from "../pages/about/About";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path:"login",
                 element:<Login/>
+            },
+            {
+               path:"about",
+               element:<About/>
             },
             {
                 path:"sign-up",

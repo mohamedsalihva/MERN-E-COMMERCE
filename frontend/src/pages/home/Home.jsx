@@ -5,7 +5,7 @@ import ProductCard from '../../component/productcard/ProductCard'
 
 function Home() {
   return (
-    <div>
+    <div id='Home'>
       <ProductCategory />
       <Banner />
       <ProductCard category={"airpodes"} heading={"Top Selling Airpodes"} />
