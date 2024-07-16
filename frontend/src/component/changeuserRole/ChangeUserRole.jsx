@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import ROLE from '../../common/role/role'
+import React, { useState } from 'react';
+import ROLE from '../../common/role/role';
 import { IoMdClose } from "react-icons/io";
 import SummaryApi from '../../common/index';
 import { toast } from 'react-toastify';
@@ -54,10 +54,35 @@ const ChangeUserRole = ({
         }
     };
 
+    const deleteUser = async (userId) => {
+        try {
+            const response = await fetch(SummaryApi.DeleteUser.url, {
+                method: SummaryApi.DeleteUser.method,
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ userId })
+            });
+    
+            const responseData = await response.json();
+    
+            if (response.ok && responseData.success) {
+                toast.success("User deleted successfully");
+                onClose();
+                callFunc();
+            } else {
+                toast.error(responseData.message || "User deletion failed");
+            }
+        } catch (error) {
+            console.error("Error during deletion:", error);
+            toast.error("An error occurred during user deletion");
+        }
+    };
+    
     return (
         <div className='fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-center items-center bg-slate-200 bg-opacity-50'>
             <div className='mx-auto bg-white shadow-md p-4 w-full max-w-sm'>
-
                 <button className='block ml-auto' onClick={onClose}>
                     <IoMdClose />
                 </button>
@@ -113,6 +138,13 @@ const ChangeUserRole = ({
                     onClick={updateUser}
                 >
                     Update User
+                </button>
+
+                <button
+                    className='w-full py-2 px-4 rounded bg-red-600 text-white hover:bg-red-700 mt-2'
+                    onClick={() => deleteUser(userId)}
+                >
+                    Delete User
                 </button>
             </div>
         </div>

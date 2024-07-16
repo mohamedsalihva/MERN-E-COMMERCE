@@ -28,6 +28,11 @@ const SummaryApi = {
         url: `${backendDomain}/api/update-user`,
         method: "put"
     },
+    DeleteUser:{
+          url:`${backendDomain}/api/delete-user`,
+          method :"DELETE"
+    },
+
     uploadProduct: {
         url: `${backendDomain}/api/upload-product`,
         method: "post",
