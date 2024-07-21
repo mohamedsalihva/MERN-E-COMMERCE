@@ -2,19 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
-const connectDB = require('./config/db');
+const connectDB = require('./config/db'); // Adjust the path if necessary
 const router = require('./routes/route');
 
 const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: 'http://localhost:3000', // Replace with your frontend URL
     credentials: true
 }));
 
-// Increase payload limit
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
@@ -28,11 +26,7 @@ app.get('/', (req, res) => {
 
 // Connect to the database and start the server
 connectDB().then(() => {
-    const port = process.env.PORT || 8080;
-    app.listen(port, () => {
-        console.log("Connected to DB");
-        console.log(`Server is running on port ${port}`);
+    app.listen(process.env.PORT || 8080, () => {
+        console.log("Server is running on port", process.env.PORT || 8080);
     });
-}).catch(err => {
-    console.error("Failed to connect to the database", err);
 });

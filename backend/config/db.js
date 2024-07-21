@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-// Hardcoded MongoDB URI
-const MONGODB_URI = 'mongodb://localhost:27017/users'; // Replace with your actual MongoDB URI
+const MONGODB_URI = 'mongodb://localhost:27017/users'; 
 
 async function connectDB() {
     try {
