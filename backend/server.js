@@ -22,6 +22,10 @@ app.use(cookieParser());
 // Routes
 app.use("/api", router);
 
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
+
 // Connect to the database and start the server
 connectDB().then(() => {
     app.listen(() => {
