@@ -9,7 +9,8 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL, // Ensure this is correctly set in your .env file
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Use an array of methods
     credentials: true
 }));
 
@@ -28,8 +29,9 @@ app.get('/', (req, res) => {
 
 // Connect to the database and start the server
 connectDB().then(() => {
-    app.listen(() => {
+    const port = process.env.PORT || 8080; // Specify a port number
+    app.listen(port, () => {
         console.log("Connected to DB");
-        console.log("Server is running");
+        console.log(`Server is running on port ${port}`);
     });
 });
