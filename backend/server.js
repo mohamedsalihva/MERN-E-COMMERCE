@@ -9,15 +9,14 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL, // Ensure this is correctly set in your .env file
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Use an array of methods
+    origin: process.env.FRONTEND_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
 
 // Increase payload limit
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
 app.use(cookieParser());
 
 // Routes
@@ -29,9 +28,11 @@ app.get('/', (req, res) => {
 
 // Connect to the database and start the server
 connectDB().then(() => {
-    const port = process.env.PORT || 8080; // Specify a port number
-     app.listen(port, () => {
-         console.log("Connected to DB");
-         console.log(`Server is running on port ${port}`);
-     });
+    const port = process.env.PORT || 8080;
+    app.listen(port, () => {
+        console.log("Connected to DB");
+        console.log(`Server is running on port ${port}`);
+    });
+}).catch(err => {
+    console.error("Failed to connect to the database", err);
 });
