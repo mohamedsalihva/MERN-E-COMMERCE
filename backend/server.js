@@ -30,8 +30,8 @@ app.get('/', (req, res) => {
 // Connect to the database and start the server
 connectDB().then(() => {
     const port = process.env.PORT || 8080; // Specify a port number
-    app.listen(port, () => {
-        console.log("Connected to DB");
-        console.log(`Server is running on port ${port}`);
-    });
+    // app.listen(port, () => {
+         console.log("Connected to DB");
+         console.log(`Server is running on port ${port}`);
+    // });
 });
