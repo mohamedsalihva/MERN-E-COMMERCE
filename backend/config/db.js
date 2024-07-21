@@ -5,7 +5,6 @@ const MONGODB_URI = 'mongodb://localhost:27017/users'; // Replace with your actu
 
 async function connectDB() {
     try {
-        // Use the hardcoded URI
         await mongoose.connect(MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
