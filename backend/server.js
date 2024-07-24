@@ -2,14 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
-const connectDB = require('./config/db'); // Adjust the path if necessary
+const connectDB = require('./config/db'); 
 const router = require('./routes/route');
 
 const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL, // Replace with your frontend URL
+    origin: process.env.FRONTEND_URL, 
     credentials: true
 }));
 
