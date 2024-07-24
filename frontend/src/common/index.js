@@ -1,7 +1,7 @@
 
 
 
-const backendDomain = "https://mern-e-commerce-alpha.vercel.app/";
+const backendDomain = "http://localhost:8080";
 
 
 const SummaryApi = {
