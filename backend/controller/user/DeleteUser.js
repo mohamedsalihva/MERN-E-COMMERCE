@@ -2,11 +2,11 @@ const userModel = require("../../models/userModel");
 
 async function DeleteUser(req, res) {
     const { userId } = req.body;
-    const requestorId = req.userId; // Assuming the ID of the requester is in req.userId
+    const requestorId = req.userId;
     console.log("Requestor ID:", requestorId);
 
     try {
-        // Fetch the user making the request to check their role
+   
         let requestor = await userModel.findById(requestorId);
         if (!requestor || requestor.role !== 'ADMIN') {
             return res.status(403).json({
@@ -16,7 +16,7 @@ async function DeleteUser(req, res) {
             });
         }
 
-        // Proceed to delete the user specified in the request body
+      
         let deletedUser = await userModel.deleteOne({ _id: userId });
         console.log("Deleted User:", deletedUser);
 

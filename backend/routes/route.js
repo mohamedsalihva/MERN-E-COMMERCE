@@ -11,7 +11,6 @@ const AuthToken = require('../middleware/AuthToken')
 const userLogout = require('../controller/user/userLogout')
 const AllUsersController =require('../controller/user/allUser')
 const updateUserController = require('../controller/user/UpdateUser')
-
 const uploadProduct = require('../controller/product/UploadProduct')
 const getProduct = require('../controller/product/getProduct')
 const UpdateProduct = require('../controller/product/UpdateProduct')
@@ -25,6 +24,10 @@ const updatecart = require("../controller/user/updateAddtoCartProduct")
 const deletecart = require ("../controller/user/deleteCart")
 const SearchProduct = require('../controller/product/SearchProduct')
 const DeleteUser = require('../controller/user/DeleteUser')
+const DeleteProduct = require('../controller/product/DeleteProduct')
+
+
+
 
 router.post("/signup",userSignUpController)
 router.post("/signin",userSignInController)
@@ -45,6 +48,6 @@ router.get("/view-cart-product",AuthToken,veiwCartProduct)
 router.put("/update-cartProduct",AuthToken,updatecart)
 router.delete("/delete-cart",AuthToken,deletecart)
 router.get("/search",SearchProduct)
-
+router.delete("/delete-product",AuthToken,DeleteProduct)
 
 module.exports =router

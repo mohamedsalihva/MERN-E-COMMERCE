@@ -10,20 +10,13 @@ import { toast } from 'react-toastify';
 const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   const [data, setData] = useState({
     ...productData,
-    productName: productData?.productName,
-    brandName: productData?.brandName,
-    category: productData?.category,
-    productImage: productData?.productImage || [],
-    description: productData?.description,
-    price: productData?.price,
-    sellingPrice: productData?.sellingPrice
+    productImage: productData?.productImage || []
   });
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-
-    setData((preve) => ({
-      ...preve,
+    setData((prev) => ({
+      ...prev,
       [name]: value
     }));
   };
@@ -32,9 +25,9 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
     const file = e.target.files[0];
     const uploadImageCloudinary = await uploadImage(file);
 
-    setData((preve) => ({
-      ...preve,
-      productImage: [...preve.productImage, uploadImageCloudinary.url]
+    setData((prev) => ({
+      ...prev,
+      productImage: [...prev.productImage, uploadImageCloudinary.url]
     }));
   };
 
@@ -42,9 +35,9 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
     const newProductImage = [...data.productImage];
     newProductImage.splice(index, 1);
 
-    setData((preve) => ({
-      ...preve,
-      productImage: [...newProductImage]
+    setData((prev) => ({
+      ...prev,
+      productImage: newProductImage
     }));
   };
 
@@ -55,7 +48,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
       method: SummaryApi.updateProduct.method,
       credentials: 'include',
       headers: {
-        "content-type": "application/json"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
     });
@@ -66,10 +59,39 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
       toast.success(responseData?.message);
       onClose();
       fetchdata();
-    }
-
-    if (responseData.error) {
+    } else if (responseData.error) {
       toast.error(responseData?.message);
+    }
+  };
+
+  const handleDeleteProduct = async () => {
+    try {
+      const response = await fetch(SummaryApi.deleteProduct.url, {
+        method: SummaryApi.deleteProduct.method,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ _id: data._id })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+
+      if (responseData.success) {
+        toast.success(responseData?.message);
+        console.log("deleted successfully");
+        onClose();
+        fetchdata();
+      } else {
+        toast.error(responseData?.message);
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("An error occurred while deleting the product.");
     }
   };
 
@@ -88,9 +110,9 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
           <input
             type='text'
             id='productName'
-            placeholder='enter product name'
+            placeholder='Enter product name'
             name='productName'
-            value={data.productName}
+            value={data.productName || ''}
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
             required
@@ -100,8 +122,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
           <input
             type='text'
             id='brandName'
-            placeholder='enter brand name'
-            value={data.brandName}
+            placeholder='Enter brand name'
+            value={data.brandName || ''}
             name='brandName'
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
@@ -109,13 +131,11 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
           />
 
           <label htmlFor='category' className='mt-3'>Category :</label>
-          <select required value={data.category} name='category' onChange={handleOnChange} className='p-2 bg-slate-100 border rounded'>
-            <option value={""}>Select Category</option>
-            {
-              productCategory.map((el) => (
-                <option value={el.value} key={el.value}>{el.label}</option>
-              ))
-            }
+          <select required value={data.category || ''} name='category' onChange={handleOnChange} className='p-2 bg-slate-100 border rounded'>
+            <option value="">Select Category</option>
+            {productCategory.map((el) => (
+              <option value={el.value} key={el.value}>{el.label}</option>
+            ))}
           </select>
 
           <label htmlFor='productImage' className='mt-3'>Product Image :</label>
@@ -128,39 +148,36 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
               </div>
             </div>
           </label>
+
           <div>
-            {
-              data?.productImage[0] ? (
-                <div className='flex items-center gap-2'>
-                  {
-                    data.productImage.map((el, index) => (
-                      <div className='relative group' key={el + index}>
-                        <img
-                          src={el}
-                          alt={el}
-                          width={80}
-                          height={80}
-                          className='bg-slate-100 border cursor-pointer'
-                        />
-                        <div className='absolute bottom-0 right-0 p-1 text-white bg-red-600 rounded-full hidden group-hover:block cursor-pointer' onClick={() => handleDeleteProductImage(index)}>
-                          <MdDelete />
-                        </div>
-                      </div>
-                    ))
-                  }
-                </div>
-              ) : (
-                <p className='text-red-600 text-xs'>*Please upload product image</p>
-              )
-            }
+            {data?.productImage.length > 0 ? (
+              <div className='flex items-center gap-2'>
+                {data.productImage.map((el, index) => (
+                  <div className='relative group' key={el + index}>
+                    <img
+                      src={el}
+                      alt={`Product Image ${index}`}
+                      width={80}
+                      height={80}
+                      className='bg-slate-100 border cursor-pointer'
+                    />
+                    <div className='absolute bottom-0 right-0 p-1 text-white bg-red-600 rounded-full hidden group-hover:block cursor-pointer' onClick={() => handleDeleteProductImage(index)}>
+                      <MdDelete />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className='text-red-600 text-xs'>*Please upload a product image</p>
+            )}
           </div>
 
           <label htmlFor='price' className='mt-3'>Price :</label>
           <input
             type='number'
             id='price'
-            placeholder='enter price'
-            value={data.price}
+            placeholder='Enter price'
+            value={data.price || ''}
             name='price'
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
@@ -171,8 +188,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
           <input
             type='number'
             id='sellingPrice'
-            placeholder='enter selling price'
-            value={data.sellingPrice}
+            placeholder='Enter selling price'
+            value={data.sellingPrice || ''}
             name='sellingPrice'
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
@@ -182,19 +199,22 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
           <label htmlFor='description' className='mt-3'>Description :</label>
           <textarea
             className='h-28 bg-slate-100 border resize-none p-1'
-            placeholder='enter product description'
+            placeholder='Enter product description'
             rows={3}
             onChange={handleOnChange}
             name='description'
-            value={data.description}
-          >
-          </textarea>
+            value={data.description || ''}
+          ></textarea>
 
-          <button className='px-3 py-2 bg-red-600 text-white mb-10 hover:bg-red-700'>Update Product</button>
+          <button type='submit' className='px-3 py-2 bg-red-600 text-white mb-5 hover:bg-red-700'>Update Product</button>
+
+          <button type='button' className='px-3 py-2 bg-red-600 text-white mb-10 hover:bg-red-700' onClick={handleDeleteProduct}>Delete Product</button>
+
         </form>
+
       </div>
     </div>
   );
-}
+};
 
 export default AdminEditProduct;

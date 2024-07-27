@@ -81,6 +81,10 @@ const SummaryApi = {
       searchProduct:{
         url:`${backendDomain}/api/search`,
         method:"get"
+      },
+      deleteProduct:{
+        url:`${backendDomain}/api/delete-product`,
+        method:"delete"
       }
 
 

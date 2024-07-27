@@ -40,7 +40,6 @@ const handleSubmit = async(e) =>{
   const dataApi = await dataResponse.json()
 
   if(dataApi.success){
-      toast.success(dataApi.message)
       console.log(dataApi.message)
       navigate('/')
       fetchUserDetails()

@@ -44,7 +44,7 @@ async function userSignUpController(req,res){
             data : saveUser,
             success : true,
             error : false,
-            message : "User created Successfully!"
+            message : "Account Created Successfully!"
         })
 
 
