@@ -12,7 +12,8 @@ function SignUp() {
     password:"",
     name:"",
     confirmPassword:"",
-    profilePic:""
+    profilePic:"",
+    role:""
     });
     const navigate = useNavigate()
 
@@ -150,6 +151,23 @@ const handleSubmit = async(e) =>{
                 />
               </div>
             </div>
+
+            <div className='grid'>
+              <label>Role : </label>
+              <div className='bg-slate-100 p-2'>
+                <select
+                  name='role'
+                  value={data.role}
+                  onChange={handleOnChange}
+                  className='w-full h-full outline-none bg-transparent'
+                  required
+                >
+                  <option value="BUYER">Buyer</option>
+                  <option value="SELLER">Seller</option>
+                </select>
+              </div>
+            </div>
+
 
             <button className='bg-red-600 hover:bg-red-700 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110 transition-all mx-auto block mt-6'>
               Sign Up
