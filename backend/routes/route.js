@@ -29,6 +29,7 @@ const DeleteProduct = require('../controller/product/DeleteProduct')
 
 
 
+
 router.post("/signup",userSignUpController)
 router.post("/signin",userSignInController)
 router.get("/user-details",AuthToken,userDetailsController)
@@ -49,5 +50,6 @@ router.put("/update-cartProduct",AuthToken,updatecart)
 router.delete("/delete-cart",AuthToken,deletecart)
 router.get("/search",SearchProduct)
 router.delete("/delete-product",AuthToken,DeleteProduct)
+
 
 module.exports =router
