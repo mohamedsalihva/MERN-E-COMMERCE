@@ -47,7 +47,7 @@ const SummaryApi = {
         method: "put"
     },
     productCategory: {
-        url: `${backendDomain}/api/get-ProductCategory`,
+        url: `${backendDomain}/api/ProductCategory`,
         method: "get"
     },
     categorywiseproduct: {
@@ -56,10 +56,10 @@ const SummaryApi = {
     },
     productDetail: {
         url: `${backendDomain}/api/product-details`,
-        method :"post"
+        method :"get"
     },
     addProductRating: {
-        url: `${backendDomain}/api/rating`,
+        url: `${backendDomain}/api/rate-product`,
         method: 'post'
     },
     addToCart:{
@@ -90,6 +90,7 @@ const SummaryApi = {
         url:`${backendDomain}/api/delete-product`,
         method:"delete"
       }
+      
 
 
 };

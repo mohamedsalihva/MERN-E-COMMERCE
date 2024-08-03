@@ -3,7 +3,6 @@ const express = require ('express')
 const router = express.Router()
 
 
-
 const userSignUpController = require('../controller/user/userSignup')
 const userSignInController = require('../controller/user/userSignin')
 const userDetailsController = require("../controller/user/userDetail")
@@ -25,7 +24,7 @@ const deletecart = require ("../controller/user/deleteCart")
 const SearchProduct = require('../controller/product/SearchProduct')
 const DeleteUser = require('../controller/user/DeleteUser')
 const DeleteProduct = require('../controller/product/DeleteProduct')
-
+const addRating = require('../controller/product/Rating')
 
 
 
@@ -40,9 +39,9 @@ router.delete("/delete-user",AuthToken,DeleteUser)
 router.post("/upload-product",AuthToken,uploadProduct)
 router.get("/get-product",getProduct)
 router.put("/update-product",AuthToken,UpdateProduct)
-router.get("/get-ProductCategory",getProductCategory)
+router.get("/ProductCategory",getProductCategory)
 router.post("/category-product",CategoryWiseProduct)
-router.post("/product-details",getproductDetails)
+router.get("/product-details",AuthToken,getproductDetails)
 router.post("/add-to-cart",AuthToken,addToCart)
 router.get("/countAddToCart",AuthToken,countAddToCart)
 router.get("/view-cart-product",AuthToken,veiwCartProduct)
@@ -50,6 +49,6 @@ router.put("/update-cartProduct",AuthToken,updatecart)
 router.delete("/delete-cart",AuthToken,deletecart)
 router.get("/search",SearchProduct)
 router.delete("/delete-product",AuthToken,DeleteProduct)
+router.post('/rate-product',AuthToken,addRating);
 
-
-module.exports =router
+module.exports=router

@@ -11,6 +11,7 @@ import ProductDetail from "../pages/productdetail/ProductDetail";
 import Cart from "../pages/cart/Cart";
 import SearchProduct from "../pages/searchproduct/SearchProduct";
 import About from "../pages/about/About";
+import ProductFilter from "../pages/filter/ProductFilter";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
             {
                 path:"",
                 element:<Home/>
+            },
+            {
+               path:"ProductFilter",
+               element:<ProductFilter/>
+
             },
             {
                 path:"login",
@@ -33,11 +39,6 @@ const router = createBrowserRouter([
                 path:"sign-up",
                 element:<Signup/>
             },
-            // {
-            //    path:"product-category/:categoryname",
-            //    element:<CategoryProduct/>
-
-            // },
             {
                path:"product/:id",
                element:<ProductDetail/>

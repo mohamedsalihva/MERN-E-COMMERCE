@@ -11,6 +11,7 @@ import { setUserDetails } from './store/userSlice';
 import { useDispatch } from 'react-redux';
 
 
+
 function App() {
   const dispatch = useDispatch()
   const [cartcount, setCartcount] = useState(0)
@@ -58,7 +59,8 @@ function App() {
       <Context.Provider value={{
         fetchUserDetails,
         cartcount,
-        fetchUserAddToCart
+        fetchUserAddToCart,
+      
       }}>
         <ToastContainer
           position='top-center'
@@ -68,7 +70,7 @@ function App() {
         <main>
           <Outlet />
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </Context.Provider>
     </>
 
