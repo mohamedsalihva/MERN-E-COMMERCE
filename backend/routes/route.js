@@ -24,7 +24,7 @@ const deletecart = require ("../controller/user/deleteCart")
 const SearchProduct = require('../controller/product/SearchProduct')
 const DeleteUser = require('../controller/user/DeleteUser')
 const DeleteProduct = require('../controller/product/DeleteProduct')
-const addRating = require('../controller/product/Rating')
+
 
 
 
@@ -49,6 +49,6 @@ router.put("/update-cartProduct",AuthToken,updatecart)
 router.delete("/delete-cart",AuthToken,deletecart)
 router.get("/search",SearchProduct)
 router.delete("/delete-product",AuthToken,DeleteProduct)
-router.post('/rate-product',AuthToken,addRating);
+
 
 module.exports=router

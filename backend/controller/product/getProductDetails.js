@@ -1,4 +1,5 @@
 const productModel = require("../../models/ProductModels");
+
 const getProductDetail = async (req, res) => {
     try {
         const { productId } = req.query;
@@ -19,17 +20,8 @@ const getProductDetail = async (req, res) => {
 
         console.log('Fetched product data:', product);
 
-        if (!product.ratings) {
-            product.ratings = [];
-        }
-
-        const userRating = product.ratings.find(r => r.userId.toString() === userId);
-
         res.json({
-            data: {
-                ...product,
-                userRating: userRating ? userRating.rating : null
-            },
+            data: product,
             message: "Get product success",
             success: true,
             error: false
@@ -43,4 +35,5 @@ const getProductDetail = async (req, res) => {
         });
     }
 };
-module.exports=getProductDetail
+
+module.exports = getProductDetail;

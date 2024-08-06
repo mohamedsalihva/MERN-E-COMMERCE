@@ -16,9 +16,9 @@ const ProductDetail = () => {
         description: "",
         price: "",
         sellingPrice: "",
-        userRating: null
+        
     });
-    const [rating, setRating] = useState(0);
+    
 
     const { id } = useParams();
     const { user } = useContext(Context);
@@ -35,7 +35,7 @@ const ProductDetail = () => {
         
         const dataResponse = await response.json();
         setData(dataResponse?.data);
-        setRating(dataResponse?.data?.userRating || 0);
+     
     };
 
     const handlePrev = () => {
@@ -46,52 +46,7 @@ const ProductDetail = () => {
         setCurrentIndex((prevIndex) => (prevIndex === data.productImage.length - 1 ? 0 : prevIndex + 1));
     };
 
-    const handleRating = async (rate) => {
-        setRating(rate);
-
-        if (!userId) {
-            toast.error('User not authenticated');
-            return;
-        }
-
-        try {
-            const response = await fetch(SummaryApi.addProductRating.url, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: 'include', // This must be set to include cookies
-                body: JSON.stringify({
-                    productId: id,
-                    userId: userId,
-                    rating: rate
-                })
-            });
-            
-        
-
-            if (!response.ok) {
-                const error = await response.json();
-                toast.error(`Error: ${error.message}`);
-                return;
-            }
-
-            const result = await response.json();
-
-            if (result.success) {
-                toast.success('Rating submitted successfully');
-                setData(prevData => ({
-                    ...prevData,
-                    userRating: rate
-                }));
-            } else {
-                toast.error(result.message);
-            }
-        } catch (error) {
-            console.error('Error submitting rating:', error);
-            toast.error('An error occurred while submitting the rating.');
-        }
-    };
+   
 
     useEffect(() => {
         fetchProductDetail();
@@ -128,10 +83,10 @@ const ProductDetail = () => {
                     <div className="rating-container mb-4">
                         <ReactStars
                             count={5}
-                            onChange={handleRating}
+                         
                             size={24}
                             activeColor="#ffd700"
-                            value={rating}
+                          
                         />
                     </div>
                     <h1 className='text-3xl font-semibold mb-4'>{data.productName}</h1>
