@@ -1,30 +1,17 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import getcategorywiseproduct from '../../helpers/getcategorywiseproduct';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import addTocart from '../../helpers/addTocart';
 import Context from '../../context/context';
 
-const ProductCard = ({ category, heading }) => {
-  const [data, setData] = useState([]);
+const ProductCard = ({ data = [], heading }) => { // Provide default value for data
   const scrollRef = useRef(null);
+  const { fetchUserAddToCart } = useContext(Context);
 
-  const {fetchUserAddToCart} =useContext(Context)
-
-  const handleaddtocart=async (e,id)=>{
-  await  addTocart(e,id)
-  fetchUserAddToCart()
-  }
-
-
-  const fetchData = async () => {
-    const categoryproduct = await getcategorywiseproduct(category);
-    setData(categoryproduct?.data);
+  const handleAddToCart = async (e, id) => {
+    await addTocart(e, id);
+    fetchUserAddToCart();
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const scrollLeft = () => {
     scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
@@ -44,26 +31,27 @@ const ProductCard = ({ category, heading }) => {
         >
           <FaAngleLeft />
         </button>
-        <div
-          ref={scrollRef}
-          className='flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth'
-        >
-          {data.map((product, index) => (
-            <Link to={"product/"+product?._id}  key={index} className='min-w-[280px] max-w-[280px] bg-white rounded-sm shadow'>
-              <div className='bg-slate-200 h-48 p-4 flex justify-center items-center'>
-                <img src={product.productImage[0]} className='object-scale-down h-full hover:scale-110 transition-all mix-blend-multiply' alt='' />
-              </div>
-              <div className='p-4'>
-                <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black'>{product?.productName}</h2>
-                <p className='capitalize text-slate-500'>{product?.category}</p>
-                <div className='flex justify-between items-center mt-2'>
-                  <p className='text-red-600 font-medium'>&#8377;{product?.sellingPrice}</p>
-                  <p className='text-slate-500 line-through'>&#8377;{product?.price}</p>
+        <div ref={scrollRef} className='flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth'>
+          {data.length > 0 ? (
+            data.map((product, index) => (
+              <Link to={`product/${product?._id}`} key={index} className='min-w-[280px] max-w-[280px] bg-white rounded-sm shadow'>
+                <div className='bg-slate-200 h-48 p-4 flex justify-center items-center'>
+                  <img src={product.productImage[0]} className='object-scale-down h-full hover:scale-110 transition-all mix-blend-multiply' alt='' />
                 </div>
-                <button className='mt-4 text-sm bg-cyan-500 hover:bg-red-700 text-white px-3 py-1 rounded-full' onClick={(e)=>handleaddtocart(e,product?._id)}>Add to Cart</button>
-              </div>
-            </Link>
-          ))}
+                <div className='p-4'>
+                  <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black'>{product?.productName}</h2>
+                  <p className='capitalize text-slate-500'>{product?.category}</p>
+                  <div className='flex justify-between items-center mt-2'>
+                    <p className='text-red-600 font-medium'>&#8377;{product?.sellingPrice}</p>
+                    <p className='text-slate-500 line-through'>&#8377;{product?.price}</p>
+                  </div>
+                  <button className='mt-4 text-sm bg-cyan-500 hover:bg-red-700 text-white px-3 py-1 rounded-full' onClick={(e) => handleAddToCart(e, product?._id)}>Add to Cart</button>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <p>No products available.</p>
+          )}
         </div>
         <button
           onClick={scrollRight}
@@ -74,6 +62,6 @@ const ProductCard = ({ category, heading }) => {
       </div>
     </div>
   );
+};
 
-}
 export default ProductCard;
