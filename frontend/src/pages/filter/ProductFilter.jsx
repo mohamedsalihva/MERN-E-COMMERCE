@@ -19,6 +19,8 @@ const ProductFilter = () => {
 
   const [selectCategory, setSelectCategory] = useState(urlCategoryListobj);
   const [filterCategoryList, setFilterCategoryList] = useState([]);
+  const [sortBy, setSortBy] = useState("")
+  console.log("sortby:",sortBy)
 
   const fetchData = async () => {
     setLoading(true);
@@ -53,15 +55,29 @@ const ProductFilter = () => {
   useEffect(() => {
     const arrayOfCategory = Object.keys(selectCategory)
       .filter(categoryKeyName => selectCategory[categoryKeyName]);
-      
+
     setFilterCategoryList(arrayOfCategory);
 
-   
+
     const urlFormat = arrayOfCategory.map(el => `category=${el}`).join('&&');
     navigate(`/ProductFilter?${urlFormat}`);
-
     console.log('Updated filterCategoryList:', arrayOfCategory);
   }, [selectCategory]);
+
+ const HandleSortBy=(e)=>{
+const {value} =e.target
+setSortBy(value)
+if(value ==='asc'){
+setData(prev=>prev.sort((a,b)=>a.sellingPrice - b.sellingPrice))
+}
+if(value ==='dsc'){
+  setData(prev=>prev.sort((a,b)=>b.sellingPrice - a.sellingPrice))
+  }
+ }
+ useEffect(()=>{
+
+ },[sortBy])
+
 
   useEffect(() => {
     fetchData();
@@ -75,12 +91,12 @@ const ProductFilter = () => {
           <h2 className='text-xl font-bold mb-6 text-gray-900 border-b-2 border-gray-200 pb-2'>Sort by</h2>
           <ul className='space-y-4'>
             <li className='cursor-pointer py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-300'>
-              <input type='checkbox' id='price-high-low' />
-              <label htmlFor='price-high-low'>Price: High to Low</label>
+              <input type='radio' checked={sortBy === 'asc'} id='price-low-high' name='sortBy'  onChange={HandleSortBy} value={"asc"} />
+              <label htmlFor='price-low-high'>Price: Low to High</label>
             </li>
             <li className='cursor-pointer py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-300'>
-              <input type='checkbox' id='price-low-high' />
-              <label htmlFor='price-low-high'>Price: Low to High</label>
+              <input type='radio' checked={sortBy === 'dsc'}  id='price-high-low' name='sortBy'  onChange={HandleSortBy} value={"dsc"}/>
+              <label htmlFor='price-high-low'>Price: High to Low</label>
             </li>
           </ul>
 
@@ -106,7 +122,7 @@ const ProductFilter = () => {
         </div>
 
         {/* Right Side: Product Display */}
-        <div>
+        <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)]'>
           {loading ? (
             <p>Loading...</p>
           ) : (

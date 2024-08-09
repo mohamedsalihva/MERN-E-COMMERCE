@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import addTocart from '../../helpers/addTocart';
 import Context from '../../context/context';
 
-const ProductCardVertical = ({ data = [], heading }) => { // Provide default value for data
+const ProductCardVertical = ({ data = [], heading }) => { 
   const scrollRef = useRef(null);
   const { fetchUserAddToCart } = useContext(Context);
 
