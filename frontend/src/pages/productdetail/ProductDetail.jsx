@@ -4,7 +4,7 @@ import SummaryApi from '../../common';
 import ProductCard from '../../component/productcard/ProductCard';
 import ReactStars from 'react-rating-stars-component';
 import Context from '../../context/context'; 
-import { toast } from 'react-toastify';
+
 
 const ProductDetail = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,7 +30,7 @@ const ProductDetail = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            credentials: 'include' // Ensures cookies are sent with the request
+            credentials: 'include' 
         });
         
         const dataResponse = await response.json();
@@ -50,7 +50,8 @@ const ProductDetail = () => {
 
     useEffect(() => {
         fetchProductDetail();
-    }, []);
+        window.scrollTo(0,0);
+    }, [id]);
 
     return (
         <div className='container mx-auto px-4 mt-20'>

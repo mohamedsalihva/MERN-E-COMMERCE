@@ -61,7 +61,7 @@ const ProductCard = ({ category, heading }) => {
             </div>
           ) : data.length > 0 ? (
             data.map((product, index) => (
-              <Link to={`product/${product?._id}`} key={index} className='min-w-[280px] max-w-[280px] bg-white rounded-sm shadow'>
+              <Link to={`/product/${product?._id}`} key={index} className='min-w-[280px] max-w-[280px] bg-white rounded-sm shadow'>
                 <div className='bg-slate-200 h-48 p-4 flex justify-center items-center'>
                   <img src={product.productImage[0]} className='object-scale-down h-full hover:scale-110 transition-all mix-blend-multiply' alt='' />
                 </div>
