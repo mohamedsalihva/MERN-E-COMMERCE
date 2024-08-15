@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const AddToCart = mongoose.Schema({
   productId : {
-      ref : 'product',
+      ref : 'Product',
       type :String,
   },
   quantity : Number,

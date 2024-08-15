@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SummaryApi from '../../common';
 import ProductCard from '../../component/productcard/ProductCard';
 import ReactStars from 'react-rating-stars-component';
-import Context from '../../context/context'; 
+import Context from '../../context/context';
+import addTocart from '../../helpers/addTocart';
 
 
 const ProductDetail = () => {
@@ -16,13 +17,15 @@ const ProductDetail = () => {
         description: "",
         price: "",
         sellingPrice: "",
-        
+
     });
-    
+
 
     const { id } = useParams();
     const { user } = useContext(Context);
     const userId = user ? user._id : null;
+    const navigate = useNavigate()
+    const { fetchUserAddToCart } = useContext(Context);
 
     const fetchProductDetail = async () => {
         const response = await fetch(`${SummaryApi.productDetail.url}?productId=${id}&userId=${userId}`, {
@@ -30,12 +33,12 @@ const ProductDetail = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            credentials: 'include' 
+            credentials: 'include'
         });
-        
+
         const dataResponse = await response.json();
         setData(dataResponse?.data);
-     
+
     };
 
     const handlePrev = () => {
@@ -46,11 +49,20 @@ const ProductDetail = () => {
         setCurrentIndex((prevIndex) => (prevIndex === data.productImage.length - 1 ? 0 : prevIndex + 1));
     };
 
-   
+    const HandleAddTocart = async (e, id) => {
+        await addTocart(e, id)
+        fetchUserAddToCart()
+    }
+
+    const HandleBuyTocart = async (e, id) => {
+        await addTocart(e, id)
+        fetchUserAddToCart()
+        navigate("/cart")
+    }
 
     useEffect(() => {
         fetchProductDetail();
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }, [id]);
 
     return (
@@ -84,10 +96,10 @@ const ProductDetail = () => {
                     <div className="rating-container mb-4">
                         <ReactStars
                             count={5}
-                         
+
                             size={24}
                             activeColor="#ffd700"
-                          
+
                         />
                     </div>
                     <h1 className='text-3xl font-semibold mb-4'>{data.productName}</h1>
@@ -96,18 +108,18 @@ const ProductDetail = () => {
                         <p className='text-2xl text-red-600 font-bold mr-4'>&#8377;{data.sellingPrice}</p>
                         <p className='text-xl text-gray-500 line-through'>&#8377;{data.price}</p>
                     </div>
-    
+
                     <div className='flex items-center mb-4'>
-                        <button className='px-3 py-2 text-white bg-cyan-500 hover:bg-cyan-700 rounded-full mr-2'>
+                        <button className='px-3 py-2 text-white bg-cyan-500 hover:bg-cyan-700 rounded-full mr-2' onClick={(e) => HandleAddTocart(e,data?._id)}>
                             Add to Cart
                         </button>
-                        <button className='px-6 py-2 text-white bg-cyan-500 hover:bg-cyan-700 rounded-full'>
+                        <button className='px-6 py-2 text-white bg-cyan-500 hover:bg-cyan-700 rounded-full' onClick={(e)=>HandleBuyTocart(e,data?._id)}>
                             Buy Now
                         </button>
                     </div>
                 </div>
             </div>
-    
+
             {data.category && (
                 <ProductCard category={data.category} heading={"Recommended products"} />
             )}
