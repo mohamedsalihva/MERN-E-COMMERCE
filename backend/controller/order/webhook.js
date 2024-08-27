@@ -1,39 +1,41 @@
-
 const stripe = require('../../config/stripe');
 const orderModel = require('../../models/OrderProductModel');
+const AddToCartModel = require("../../models/CartProduct")
+
+
 
 const endpointSecret = process.env.STRIPE_ENDPOINT_WEBHOOK_SECRET_KEY;
 
-async function getLineItems(lineItems){
-let productItems =[]
-if(lineItems?.data?.length){
-  for(const item of lineItems.data){
-   const product =await stripe.products.retrive(item.price.product)
-   const productId = product.metadata.productId
-   const productData ={
-    productId:productId,
-    name:product.name,
-    price:item.price.unit_amount/100,
-    quantity:item.quantity,
-    image:product.image
-   }
-   productItems.push(productData)
+async function getLineItems(lineItems) {
+  let productItems = []
+  if (lineItems?.data?.length) {
+    for (const item of lineItems.data) {
+      const product = await stripe.products.retrieve(item.price.product);
+      const productId = product.metadata.productId
+      const productData = {
+        productId: productId,
+        name: product.name,
+        price: item.price.unit_amount / 100,
+        quantity: item.quantity,
+        image: product.images
+      }
+      productItems.push(productData)
+    }
   }
-}
-return productItems
+  return productItems
 }
 
-const webhooks = async(req,res)=>{
-    const sig = req.headers['Stripe-Signature'];
+const webhooks = async (req, res) => {
+  const sig = req.headers['Stripe-Signature'];
 
-    const PayloadString =JSON.stringify(req.body)
-    
-const header = stripe.webhooks.generateTestHeaderString({
+  const PayloadString = JSON.stringify(req.body)
+
+  const header = stripe.webhooks.generateTestHeaderString({
     payload: PayloadString,
-    secret :endpointSecret,
+    secret: endpointSecret,
   });
-  
-    
+
+
   let event;
 
   try {
@@ -47,28 +49,38 @@ const header = stripe.webhooks.generateTestHeaderString({
   switch (event.type) {
     case 'checkout.session.completed':
       const session = event.data.object;
-      console.log("session:",session);
+      console.log("session:", session);
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
       console.log("Line items:", lineItems);
       const productDetails = await getLineItems(lineItems)
-       
-   const orderDetails={
-          productDetails:productDetails,
-          email : session.customer_email,
-          userId : session.metadata.userId,
 
-          paymentDetails:{
-            paymentId : session.payment_intent,
-            payment_method_type : session.payment_method_types,
-            payment_status : session.payment_status,
+      const orderDetails = {
+        productDetails: productDetails,
+        email: session.customer_email,
+        userId: session.metadata.userId,
+
+        paymentDetails: {
+          paymentId: session.payment_intent,
+          payment_method_type: session.payment_method_types,
+          payment_status: session.payment_status,
         },
-        shipping_options : session. shipping_options,
-        totalAmount : session.amount_total
-   }
+        shipping_options: session.shipping_options.map(s=>{
+          return{
+            ...s,
+            shipping_amount :s.shipping_amount / 100
+          }
+        }),
+        totalAmount: session.amount_total / 100
+      }
 
-   const order = await orderModel(orderDetails)
-   const saveOrder = await order.save()
+      const order = await orderModel(orderDetails)
+      const saveOrder = await order.save()
 
+      if(saveOrder?._id){
+
+        const deleteCartItems = await AddToCartModel.deleteMany({userId : session.metadata.userId})
+      }
+      
       break;
     case 'payment_method.attached':
       const paymentMethod = event.data.object;
@@ -78,8 +90,8 @@ const header = stripe.webhooks.generateTestHeaderString({
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
-res.status(200).send();
+  res.status(200).send();
 
 }
 
-module.exports =webhooks;
+module.exports = webhooks;

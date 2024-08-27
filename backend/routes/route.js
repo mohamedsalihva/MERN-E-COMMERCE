@@ -27,6 +27,7 @@ const DeleteProduct = require('../controller/product/DeleteProduct')
 const filterProduct = require('../controller/product/FilterProduct')
 const paymentController = require('../controller/order/PaymentController')
 const webhooks = require('../controller/order/webhook')
+const orderController = require('../controller/order/OrderController')
 
 
 
@@ -58,5 +59,6 @@ router.post("/filter-product",filterProduct)
 // payment
 router.post("/checkout",AuthToken,paymentController)
 router.post("/webhook",webhooks)
+router.get("/order-list",AuthToken,orderController)
 
 module.exports=router
