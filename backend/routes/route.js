@@ -25,6 +25,8 @@ const SearchProduct = require('../controller/product/SearchProduct')
 const DeleteUser = require('../controller/user/DeleteUser')
 const DeleteProduct = require('../controller/product/DeleteProduct')
 const filterProduct = require('../controller/product/FilterProduct')
+const paymentController = require('../controller/order/PaymentController')
+const webhooks = require('../controller/order/webhook')
 
 
 
@@ -52,5 +54,9 @@ router.get("/search",SearchProduct)
 router.delete("/delete-product",AuthToken,DeleteProduct)
 router.post("/filter-product",filterProduct)
 
+
+// payment
+router.post("/checkout",AuthToken,paymentController)
+router.post("/webhook",webhooks)
 
 module.exports=router

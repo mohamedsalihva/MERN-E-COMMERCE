@@ -70,7 +70,6 @@ function App() {
         <main>
           <Outlet />
         </main>
-         <Footer /> 
       </Context.Provider>
     </>
 

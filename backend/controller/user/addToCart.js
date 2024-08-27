@@ -6,7 +6,7 @@ try {
     const {productId} = req?.body
     const currentUser = req.userId
 
-  const isproductavailable = await AddToCartModel.findOne({productId})
+  const isproductavailable = await AddToCartModel.findOne({productId,userId : currentUser})
 
   if(isproductavailable){
     return res.json({

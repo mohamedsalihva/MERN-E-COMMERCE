@@ -3,6 +3,7 @@ import SummaryApi from '../../common';
 import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Context from '../../context/context';
+import {loadStripe} from '@stripe/stripe-js';
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -92,6 +93,26 @@ const Cart = () => {
       updateCart(id, qty - 1);
     }
   };
+ const handlePayment =async()=>{
+
+  const stripePromise =await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+
+      const response = await fetch(SummaryApi.payment.url,{
+        method:SummaryApi.payment.method,
+        credentials:'include',
+        headers: {
+          "content-type": "application/json"
+        },
+        body:JSON.stringify({
+          cartItems:data
+        })
+      })
+      const DataResponse = await response.json()
+      if(DataResponse?.id){
+        stripePromise.redirectToCheckout({sessionId :DataResponse.id})
+      }
+      console.log("DataResponsepayment:",DataResponse)
+ }
 
   return (
     <div className='container mx-auto mt-20 ml-10'>
@@ -156,7 +177,8 @@ const Cart = () => {
             ))
           )}
         </div>
-
+         {
+          data[0] && (
         <div className='mt-5 lg:mt-0 w-full max-w-sm mr-20'>
           {loading ? (
             <div className='h-36 bg-gray-200 border border-gray-300 animate-pulse rounded-md'></div>
@@ -171,10 +193,12 @@ const Cart = () => {
                 <p>Total Price</p>
                 <p>₹{data.reduce((total, item) => total + (item.productId?.sellingPrice * item.quantity), 0).toFixed(2)}</p>
               </div>
-              <button className='bg-blue-600 text-white py-2 rounded-md w-full'>Proceed to Payment</button>
+              <button className='bg-blue-600 text-white py-2 rounded-md w-full'onClick={handlePayment}>Proceed to Payment</button>
             </div>
           )}
         </div>
+          )
+         }
       </div>
     </div>
   );

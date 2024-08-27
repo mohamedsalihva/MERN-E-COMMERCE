@@ -12,6 +12,10 @@ import Cart from "../pages/cart/Cart";
 import SearchProduct from "../pages/searchproduct/SearchProduct";
 import About from "../pages/about/About";
 import ProductFilter from "../pages/filter/ProductFilter";
+import Sucesspage from "../pages/successpaymentpage/SuccessPage";
+import SuccessPage from "../pages/successpaymentpage/SuccessPage";
+import CancelPage from "../pages/cancelpaymentPage/CancelPage";
+import OrderPage from "../pages/orderpage/OrderPage";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +50,18 @@ const router = createBrowserRouter([
             {
             path:"cart",
             element:<Cart/>
+            },
+            {
+                path :"Success",
+                element:<SuccessPage/>
+            },
+            {
+                path :"Cancel",
+                element:<CancelPage/>
+            },
+            {
+                path:"orders",
+                element:<OrderPage/>
             },
             {
               path:"search",
