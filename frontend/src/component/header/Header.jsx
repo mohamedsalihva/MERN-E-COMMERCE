@@ -118,7 +118,7 @@ function Header() {
           <div className="flex items-center gap-4">
             {user?._id && (
               <div className="text-gray-600 cursor-pointer hover:text-cyan-500">
-                <FaBell size={20} />
+              <Link to={"/orders"}><FaBell size={20}/></Link>  
               </div>
             )}
 
