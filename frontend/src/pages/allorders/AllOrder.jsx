@@ -6,8 +6,8 @@ function OrderPage() {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch(SummaryApi.getOrder.url, {
-        method: SummaryApi.getOrder.method,
+      const response = await fetch(SummaryApi.allOrder.url, {
+        method: SummaryApi.allOrder.method,
         credentials: 'include',
       });
       const DataResponse = await response.json();
@@ -29,7 +29,7 @@ function OrderPage() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 h-[calc(100vh-190px)] overflow-y-scroll">
       <h1 className="text-2xl font-bold mb-6 text-center">Your Orders</h1>
       {data.length === 0 ? (
         <p className="text-center text-gray-500">No orders available</p>

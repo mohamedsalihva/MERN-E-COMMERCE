@@ -22,7 +22,7 @@ function AllProducts() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-100 p-4 h-[calc(100vh-190px)] overflow-y-scroll">
       <div className="bg-white py-4 px-6 rounded-lg shadow-md flex justify-between items-center">
         <h2 className="font-bold text-xl text-gray-800">All Products</h2>
         <button
