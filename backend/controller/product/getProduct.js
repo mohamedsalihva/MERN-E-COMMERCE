@@ -1,4 +1,3 @@
-
 const  productModel = require('../../models/ProductModels')
 
 const getProduct = async(req,res)=>{
@@ -13,7 +12,7 @@ const getProduct = async(req,res)=>{
 
     } catch (error) {
         res.status(400).json({
-            message: error.message || err,
+            message: error.message,
             error: true,
             success: false
         });
