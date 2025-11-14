@@ -21,14 +21,6 @@ app.use(cookieParser());
 // Routes
 app.use("/api", router);
 
-// Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-// Catch all handler: send back React's index.html file for any non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-});
-
 // Connect to the database and start the server
 connectDB().then(() => {
     const port = process.env.PORT || 8080; // Use port 8080 consistently
