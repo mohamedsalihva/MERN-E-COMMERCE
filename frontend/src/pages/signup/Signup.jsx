@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import imageTobase64 from '../../helpers/imageTobase64';
-import SummaryApi from '../../common/index';
 import { toast } from 'react-toastify';
-
+import SummaryApi from '../../common/index';
+import imageTobase64 from '../../helpers/imageTobase64';
 
 function SignUp() {
 
@@ -48,13 +47,14 @@ const handleSubmit = async(e) =>{
 
   if(data.password === data.confirmPassword){
 
-    const dataResponse = await fetch(SummaryApi.signUP.url,{
-        method : SummaryApi.signUP.method,
-        headers : {
-            "content-type" : "application/json"
-        },
-        body : JSON.stringify(data)
-      })
+    try {
+      const dataResponse = await fetch(SummaryApi.signUP.url,{
+          method : SummaryApi.signUP.method,
+          headers : {
+              "content-type" : "application/json"
+          },
+          body : JSON.stringify(data)
+        })
 
       const dataApi = await dataResponse.json()
       console.log("data:",dataApi)
@@ -67,6 +67,10 @@ const handleSubmit = async(e) =>{
       if(dataApi.error){
         toast.error(dataApi.message)
       }
+    } catch (error) {
+      console.error("Signup error:", error)
+      toast.error("Failed to connect to server. Please try again.")
+    }
 
   }else{
     toast.error("Please check password and confirm password")

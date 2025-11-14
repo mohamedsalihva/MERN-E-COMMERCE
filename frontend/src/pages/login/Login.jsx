@@ -28,26 +28,32 @@ function Login() {
 const handleSubmit = async(e) =>{
   e.preventDefault()
 
-  const dataResponse = await fetch(SummaryApi.signIn.url,{
-      method : SummaryApi.signIn.method,
-     credentials : "include",
-      headers : {
-          "content-type" : "application/json"
-      },
-      body : JSON.stringify(data)
-  })
+  try {
+    const dataResponse = await fetch(SummaryApi.signIn.url,{
+        method : SummaryApi.signIn.method,
+       credentials : "include",
+        headers : {
+            "content-type" : "application/json"
+        },
+        body : JSON.stringify(data)
+    })
 
-  const dataApi = await dataResponse.json()
+    const dataApi = await dataResponse.json()
+    console.log("login response:", dataApi)
 
-  if(dataApi.success){
-      console.log(dataApi.message)
-      navigate('/')
-      fetchUserDetails()
-      fetchUserAddToCart()
-  }
+    if(dataApi.success){
+        console.log(dataApi.message)
+        navigate('/')
+        fetchUserDetails()
+        fetchUserAddToCart()
+    }
 
-  if(dataApi.error){
-      toast.error(dataApi.message)
+    if(dataApi.error){
+        toast.error(dataApi.message)
+    }
+  } catch (error) {
+    console.error("Login error:", error)
+    toast.error("Failed to connect to server. Please try again.")
   }
 
 }
